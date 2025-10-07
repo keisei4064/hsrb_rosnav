@@ -1,0 +1,2 @@
+nav2関連のrosパラメータファイルを直接編集してしまっている．
+編集前のファイルは`nav2_params_origin.yaml`

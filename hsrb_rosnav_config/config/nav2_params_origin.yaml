@@ -122,36 +122,26 @@ controller_server:
       stateful: True
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.25
-      yaw_goal_tolerance: 0.15
+      yaw_goal_tolerance: 0.25
 
     # DWB parameters
     FollowPath:
-      plugin: "nav2_rotation_shim_controller::RotationShimController"
-      primary_controller: "dwb_core::DWBLocalPlanner"
-      angular_dist_threshold: 0.5
-      forward_sampling_distance: 0.5
-      angular_disengage_threshold: 0.3
-      rotate_to_heading_angular_vel: 2.5
-      max_angular_accel: 4.0
-      simulate_ahead_time: 1.0
-      rotate_to_goal_heading: true
-
-      # Primary controller params
+      plugin: "dwb_core::DWBLocalPlanner"
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.45
+      max_vel_x: 0.3
       max_vel_y: 0.0
-      max_vel_theta: 2.0
-      min_speed_xy: 0.0
-      max_speed_xy: 0.45
+      max_vel_theta: 0.3
+      min_speed_xy: 0.05
+      max_speed_xy: 0.3
       min_speed_theta: 0.0
-      acc_lim_x: 1.5
+      acc_lim_x: 3.0
       acc_lim_y: 0.0
-      acc_lim_theta: 30.0
-      decel_lim_x: -1.5
+      acc_lim_theta: 15.0
+      decel_lim_x: -3.0
       decel_lim_y: 0.0
-      decel_lim_theta: -30.0
+      decel_lim_theta: -15.0
       vx_samples: 20
       vy_samples: 5
       vtheta_samples: 20
@@ -159,22 +149,21 @@ controller_server:
       linear_granularity: 0.025
       angular_granularity: 0.025
       transform_tolerance: 0.2
-      xy_goal_tolerance: 0.2
-      trans_stopped_velocity: 0.05
+      xy_goal_tolerance: 0.25
+      trans_stopped_velocity: 0.25
       short_circuit_trajectory_evaluation: True
       stateful: True
       critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
       BaseObstacle.scale: 0.02
-      PathAlign.scale: 48.0
+      PathAlign.scale: 32.0
       PathAlign.forward_point_distance: 0.1
-      GoalAlign.scale: 32.0
+      GoalAlign.scale: 24.0
       GoalAlign.forward_point_distance: 0.1
       PathDist.scale: 32.0
       GoalDist.scale: 24.0
-      RotateToGoal.scale: 24.0
+      RotateToGoal.scale: 32.0
       RotateToGoal.slowing_factor: 5.0
-      # RotateToGoal.lookahead_time: -1.0
-      RotateToGoal.lookahead_time: 0.1
+      RotateToGoal.lookahead_time: -1.0
 
 controller_server_rclcpp_node:
   ros__parameters:
@@ -183,8 +172,8 @@ controller_server_rclcpp_node:
 local_costmap:
   local_costmap:
     ros__parameters:
-      update_frequency: 10.0
-      publish_frequency: 5.0
+      update_frequency: 5.0
+      publish_frequency: 2.0
       global_frame: odom
       robot_base_frame: base_link
       use_sim_time: True
@@ -197,7 +186,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.45
+        inflation_radius: 0.5
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
@@ -237,8 +226,8 @@ local_costmap:
 global_costmap:
   global_costmap:
     ros__parameters:
-      update_frequency: 3.0
-      publish_frequency: 3.0
+      update_frequency: 1.0
+      publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
       use_sim_time: True
@@ -262,7 +251,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.45
+        inflation_radius: 0.5
       always_send_full_costmap: True
   global_costmap_client:
     ros__parameters:
@@ -291,7 +280,7 @@ planner_server:
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
-      tolerance: 0.3
+      tolerance: 0.5
       use_astar: false
       allow_unknown: true
 
